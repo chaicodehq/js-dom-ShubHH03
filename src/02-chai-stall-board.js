@@ -65,17 +65,71 @@
  *   // => "cutting" (cheapest chai gets "cheapest" class)
  */
 export function updateChaiPrice(document, chaiType, newPrice) {
-  // Your code here
+	// Your code here
+
+	if (newPrice <= 0 || chaiType == "" || typeof newPrice !== "number")
+		return false;
+
+	const chaiPriceElement = document.getElementById(`price-${chaiType}`);
+	if (!chaiPriceElement) return false;
+
+	chaiPriceElement.textContent = `₹${newPrice}`;
+	return true;
 }
 
 export function getChaiPrice(document, chaiType) {
-  // Your code here
+	// Your code here
+
+	const priceElement = document.getElementById(`price-${chaiType}`);
+	if (!priceElement) return null;
+
+	const text = priceElement.textContent;
+	const newText = text.replace(/₹/g, "");
+	const price = parseInt(newText);
+
+	return price;
 }
 
 export function updateStallName(document, newName) {
-  // Your code here
+	// Your code here
+
+	const nameElement = document.querySelector(".stall-name");
+	if (!nameElement || typeof newName !== "string" || newName == "")
+		return null;
+
+	const oldText = nameElement.textContent;
+	nameElement.textContent = newName;
+
+	return oldText;
 }
 
+//  *   4. highlightCheapestChai(document)
+//  *      - Finds all ".chai-price" elements using querySelectorAll
+//  *      - Parses each price (remove ₹, parse to number)
+//  *      - Adds class "cheapest" to the element with lowest price
+//  *      - Removes class "cheapest" from all other chai-price elements
+//  *      - Returns the data-chai attribute value of cheapest chai
+//  *      - Agar no chai-price elements found, return null
+
 export function highlightCheapestChai(document) {
-  // Your code here
+	const priceElements = document.querySelectorAll(".chai-price");
+	if (priceElements.length === 0) return null;
+
+	let cheapestElement = null;
+	let cheapestPrice = Infinity;
+
+	for (const element of priceElements) {
+		const price = parseInt(element.textContent.replace("₹", ""), 10);
+		if (price < cheapestPrice) {
+			cheapestPrice = price;
+			cheapestElement = element;
+		}
+	}
+
+	for (const element of priceElements) {
+		element.classList.remove("cheapest");
+	}
+
+	cheapestElement.classList.add("cheapest");
+	return cheapestElement.getAttribute("data-chai");
 }
