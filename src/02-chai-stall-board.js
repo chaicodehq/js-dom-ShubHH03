@@ -103,13 +103,6 @@ export function updateStallName(document, newName) {
 	return oldText;
 }
 
-//  *   4. highlightCheapestChai(document)
-//  *      - Finds all ".chai-price" elements using querySelectorAll
-//  *      - Parses each price (remove ₹, parse to number)
-//  *      - Adds class "cheapest" to the element with lowest price
-//  *      - Removes class "cheapest" from all other chai-price elements
-//  *      - Returns the data-chai attribute value of cheapest chai
-//  *      - Agar no chai-price elements found, return null
 
 export function highlightCheapestChai(document) {
 	const priceElements = document.querySelectorAll(".chai-price");
