@@ -40,7 +40,7 @@
  *
  * @param {string} name - Sweet ka naam (e.g., "Rasgulla")
  * @param {number} price - Sweet ki price in rupees (e.g., 30)
- * @param {string} category - Sweet ki category (e.g., "Bengali")
+ * @param {string} category - Sweet ki ccategory (e.g., "Bengali")
  * @returns {HTMLDivElement|null} - Sweet item element ya null agar invalid
  *
  * @example
@@ -61,13 +61,65 @@
  *   // => item now has <span class="special-badge">Bestseller</span>
  */
 export function createSweetItem(name, price, category) {
-  // Your code here
+	// Your code here
+
+	if (name === undefined || price === undefined || category === undefined)
+		return null;
+	if (
+		typeof name !== "string" ||
+		typeof price !== "number" ||
+		typeof category !== "string"
+	)
+		return null;
+
+	const newDiv = document.createElement("div");
+	newDiv.classList.add("sweet-item");
+
+	const h3 = document.createElement("h3");
+	h3.textContent = name;
+	newDiv.appendChild(h3);
+
+	const para = document.createElement("p");
+	para.classList.add("price");
+	para.textContent = `₹${price}`;
+	newDiv.appendChild(para);
+
+	const span = document.createElement("span");
+	span.classList.add("category");
+	span.textContent = category;
+	newDiv.appendChild(span);
+
+	return newDiv;
 }
 
 export function buildMenuBoard(sweets) {
-  // Your code here
+	// Your code here
+
+	if (!Array.isArray(sweets)) return null;
+
+	const newDiv = document.createElement("div");
+	newDiv.id = "menu-board";
+
+	for (let i = 0; i < sweets.length; i++) {
+		let item = createSweetItem(sweets[i].name, sweets[i].price, sweets[i].category);
+		newDiv.appendChild(item);
+	}
+
+	return newDiv;
 }
 
 export function addSpecialBadge(sweetElement, badgeText) {
-  // Your code here
+	// Your code here
+
+	if(sweetElement == null || sweetElement == undefined) return null;
+	if(typeof badgeText !== "string" || badgeText == "")return null
+
+	const span = document.createElement('span');
+	span.classList.add("special-badge");
+	span.textContent = `${badgeText}`;
+	
+	sweetElement.appendChild(span);
+
+	return sweetElement;
+
 }
