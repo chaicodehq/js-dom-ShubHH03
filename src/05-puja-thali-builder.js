@@ -58,17 +58,139 @@
  *   manager.removeItem("Phool"); // => true
  */
 export function setupAddButton(button, thaliElement, itemName) {
-  // Your code here
+	// Your code here
+
+	if (
+		button == null ||
+		button == undefined ||
+		thaliElement == null ||
+		thaliElement == undefined ||
+		itemName == null ||
+		itemName == undefined
+	)
+		return null;
+
+	const handler = () => {
+		const li = document.createElement("li");
+		li.textContent = itemName;
+		thaliElement.appendChild(li);
+	};
+
+	const remove = () => {
+		button.removeEventListener("click", handler);
+	};
+
+	button.addEventListener("click", handler);
+
+	return remove;
 }
 
 export function setupRemoveButton(button, thaliElement) {
-  // Your code here
+	// Your code here
+
+	if (
+		button == null ||
+		button == undefined ||
+		thaliElement == null ||
+		thaliElement == undefined
+	)
+		return null;
+
+	const handler = () => {
+		if (thaliElement && thaliElement.lastChild) {
+			thaliElement.removeChild(thaliElement.lastChild);
+		}
+	};
+
+	button.addEventListener("click", handler);
+
+	const remove = () => {
+		button.removeEventListener("click", handler);
+	};
+
+	return remove;
 }
 
 export function setupToggleItem(button, thaliElement, itemName) {
-  // Your code here
+	// Your code here
+
+	if (
+		button == null ||
+		button == undefined ||
+		thaliElement == null ||
+		thaliElement == undefined ||
+		itemName == null ||
+		itemName == undefined
+	)
+		return null;
+
+	const handler = () => {
+		const existing = Array.from(thaliElement.children).find(
+			(child) => child.textContent === itemName,
+		);
+
+		if (existing) {
+			thaliElement.removeChild(existing);
+		} else {
+			const li = document.createElement("li");
+			li.textContent = itemName;
+			thaliElement.appendChild(li);
+		}
+	};
+
+	button.addEventListener("click", handler);
+
+	const remove = () => {
+		button.removeEventListener("click", handler);
+	};
+
+	return remove;
 }
 
 export function createThaliManager(thaliElement, counterElement) {
-  // Your code here
+	// Your code here
+	if (
+		thaliElement == null ||
+		thaliElement == undefined ||
+		counterElement == null ||
+		counterElement == undefined
+	)
+		return null;
+
+	const updateCounter = () => {
+		counterElement.textContent = String(thaliElement.children.length);
+	};
+
+	return {
+		addItem(name) {
+			const li = document.createElement("li");
+			li.textContent = name;
+			thaliElement.appendChild(li);
+			updateCounter();
+			return li;
+		},
+
+		removeItem(name) {
+			const item = Array.from(thaliElement.children).find(
+				(child) => child.textContent === name,
+			);
+
+			if (!item) return false;
+
+			thaliElement.removeChild(item);
+			updateCounter();
+			return true;
+		},
+
+		getCount() {
+			return thaliElement.children.length;
+		},
+
+		clear() {
+			while (thaliElement.firstChild) {
+				thaliElement.removeChild(thaliElement.firstChild);
+			}
+			updateCounter();
+		},
+	};
 }
